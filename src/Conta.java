@@ -1,8 +1,18 @@
 public class Conta {
 
-    private int agencia;
-    private int numero;
-    private double saldo;
+    private static int SEQUENCIAL = 1;
+    private static final int AGENCIA_PADRAO = 1;
+
+    protected int agencia;
+    protected int numero;
+    protected double saldo;
+    private Cliente cliente;
+
+    public Conta(Cliente cliente) {
+        this.agencia = Conta.AGENCIA_PADRAO;
+        this.numero = SEQUENCIAL++;
+        this.cliente = cliente;
+    }
 
     public int getAgencia() {
         return agencia;
@@ -16,11 +26,30 @@ public class Conta {
         return saldo;
     }
 
-    public void sacar() {}
+    public void sacar(double valor) {
+        saldo -= valor;
+    }
 
-    public void depositar() {}
+    public void depositar(double valor) {
+        saldo += valor;
+    }
 
-    public void transferencia() {}
+    public void transferir(double valor, Conta contaDestino) {
+        this.sacar(valor);
+        contaDestino.depositar(valor);
+    }
 
+    protected void imprimirInfosConta() {
+        System.out.println(String.format("Titular: %s", this.cliente.getNome()));
+        System.out.println(String.format("Agencia: %d", this.agencia));
+        System.out.println(String.format("Numero conta: %d", this.numero));
+        System.out.println(String.format("Saldo: %.2f", this.saldo));
+    }
 
+    public void imprimirExtrato() {
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
 }
